@@ -9,3 +9,8 @@ class Job(Base):
     company_id = Column(Integer)
     title = Column(String, nullable=False)
     status = Column(String, default="draft")
+
+
+
+
+
