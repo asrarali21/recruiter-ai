@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from app.db.models.job_model import Job
 from app.db.models.job_draft_model import JobDraft
-
-
+from app.db.models.job_description import Jobdescription
+from app.agents.jd_generator import JDGeneratorAgent
 
 class JobService:
     def __init__(self , db:Session):
@@ -28,5 +28,48 @@ class JobService:
         self.db.add(draft)
         self.db.commit()
         return draft
+    
+    def generate_jd(self , job_id : int) -> Jobdescription:
+
+        job = self.db.query(Job).filter(Job.id == job_id).first()
+
+        if not job:
+            raise Exception("Job not found")
+        
+
+        if job.status != "draft":
+             raise Exception("JD can only be generated for draft jobs")
+        
+
+        draft = (
+            self.db.query(JobDraft)
+            .filter(JobDraft.job_id == job_id).first()
+        )
+        if not draft:
+            raise Exception("Job draft not found")
+        
+
+        agent = JDGeneratorAgent
+
+        jd_text = agent.generate(draft.raw_input)
+
+
+        jd = Jobdescription(
+            job_id = job.id,
+            description=jd_text
+        )
+
+
+        self.db.add(jd)
+
+        # 5️⃣ Update job status
+        job.status = "pending_approval"
+
+        self.db.commit()
+        self.db.refresh(jd)
+
+        return jd
+
+
 
 

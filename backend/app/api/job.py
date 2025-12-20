@@ -29,16 +29,28 @@ def job_create(job_data:JobCreate ,db: Session = Depends(get_db)):
     job = job_service.job_create(
         title=job_data.title
     )
-
-    
+  
+    draft = job_service.job_draft( job =  job , raw_input = job_data.dict() )
              
     return job
 
 
 
-@router.post("/generate_jd")
-def generate_jd():
-    pass
+@router.post("{jod_id}/generate_jd")
+def generate_jd(job_id:int,db: Session = Depends(get_db)):
+     job_service = JobService(db)
+
+     jd = job_service.generate_jd(job_id)
+
+     return {
+        "job_id": job_id,
+        "status": "pending_approval",
+        "jd": jd.job_description
+     }
+
+
+
+    
     
 
 
