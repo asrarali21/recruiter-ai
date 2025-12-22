@@ -61,7 +61,7 @@ Return ONLY the job description text.
         response = self.llm_client.invoke(prompt)
         return response.strip()
         
-        
+
 
 
 

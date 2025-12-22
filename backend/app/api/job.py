@@ -49,6 +49,25 @@ def generate_jd(job_id:int,db: Session = Depends(get_db)):
      }
 
 
+@router.post("{job_id}/approve")
+def approve_decision(decision:str , job_id : int ,db: Session = Depends(get_db)):
+
+    from app.graphs.HITL_graph import build_approval_graph
+
+
+    graph  = build_approval_graph()
+
+    graph.invoke({
+        "job_id": job_id,
+        "decision": decision
+    } )
+    return {
+        "job_id": job_id,
+        "status": "updated",
+        "decision": decision
+    }
+
+
 
     
     

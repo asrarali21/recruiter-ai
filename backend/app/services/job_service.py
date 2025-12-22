@@ -69,6 +69,32 @@ class JobService:
         self.db.refresh(jd)
 
         return jd
+    
+    def approve_jd(self , job_id : int , decision : str):
+        job = self.db.query(Job).filter(Job.id == job_id).first()
+        
+        if not job:
+            raise Exception("Job not found")
+        
+        if job.status != "pending_approval":
+            raise Exception("Job not in approval state")
+        
+
+
+        if decision == "approve":
+            job.status = "open"
+
+        elif decision == "reject":
+            job.status = "rejected"
+        else:
+           raise Exception("Invalid decision")
+        
+        self.db.commit()
+        return job
+        
+
+    
+
 
 
 
