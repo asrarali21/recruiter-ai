@@ -9,6 +9,9 @@ from typing import Optional , List
 
 
 
+class ApprovalDecision(BaseModel):
+    decision: str
+
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
@@ -36,21 +39,23 @@ def job_create(job_data:JobCreate ,db: Session = Depends(get_db)):
 
 
 
-@router.post("{jod_id}/generate_jd")
+@router.post("/{job_id}/generate_jd")
 def generate_jd(job_id:int,db: Session = Depends(get_db)):
+     
      job_service = JobService(db)
 
      jd = job_service.generate_jd(job_id)
+     
 
      return {
         "job_id": job_id,
         "status": "pending_approval",
-        "jd": jd.job_description
+        "jd": jd.description
      }
 
 
-@router.post("{job_id}/approve")
-def approve_decision(decision:str , job_id : int ,db: Session = Depends(get_db)):
+@router.post("/{job_id}/approve")
+def approve_decision(   approval: ApprovalDecision , job_id : int ,db: Session = Depends(get_db)):
 
     from app.graphs.HITL_graph import build_approval_graph
 
@@ -59,12 +64,12 @@ def approve_decision(decision:str , job_id : int ,db: Session = Depends(get_db))
 
     graph.invoke({
         "job_id": job_id,
-        "decision": decision
+        "decision": approval.decision
     } )
     return {
         "job_id": job_id,
         "status": "updated",
-        "decision": decision
+        "decision": approval.decision
     }
 
 

@@ -6,15 +6,15 @@ import os
 
 GOOGLE_APIKEY=os.getenv("GOOGLE_APIKEY")
 class JDGeneratorAgent():
-    def __init__(self , llm_client):
+    def __init__(self ):
 
-        llm = ChatGoogleGenerativeAI(
-          model="gemini-3-pro", 
+        llm_client = ChatGoogleGenerativeAI(
+          model="gemini-2.5-flash", 
           api_key=GOOGLE_APIKEY
 
         )
 
-        self.llm_client = llm
+        self.llm_client = llm_client
 
     def build_prompt(self , context:dict):
         """
@@ -59,7 +59,7 @@ Return ONLY the job description text.
         prompt = self.build_prompt(context)
 
         response = self.llm_client.invoke(prompt)
-        return response.strip()
+        return response
         
 
 

@@ -49,9 +49,12 @@ class JobService:
             raise Exception("Job draft not found")
         
 
-        agent = JDGeneratorAgent
+        agent = JDGeneratorAgent()
 
-        jd_text = agent.generate(draft.raw_input)
+        ai_response = agent.generate(draft.raw_input)
+
+
+        jd_text = ai_response.content
 
 
         jd = Jobdescription(

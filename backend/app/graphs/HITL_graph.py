@@ -9,20 +9,20 @@ class ApprovalState(TypedDict):
 
 
 
-def route_decision(state:ApprovalState):
+def route_decision(state:ApprovalState)->str:
     decision = state["decision"]
 
     if decision == "approve":
-        return approve_job
+        return "approve_job"
     
     elif decision == "reject":
-        return reject_job
+        return "reject_job"
     else:
-        raise ValueError("Invalid decision")
+        raise ValueError("Invalid decision ")
     
 
 
-def approve_job(state:ApprovalState):
+def approve_job(state:ApprovalState)->ApprovalState:
     db = SessionLocal()
 
    
@@ -34,10 +34,11 @@ def approve_job(state:ApprovalState):
         )
     finally:
         db.close()
+
     return state
 
 
-def reject_job(state:ApprovalState):
+def reject_job(state:ApprovalState)->ApprovalState:
     db = SessionLocal()
     try:
         service = JobService(db)
@@ -54,19 +55,17 @@ def reject_job(state:ApprovalState):
 def build_approval_graph():
     graph = StateGraph(ApprovalState)
 
-
     graph.add_node('approve_job' , approve_job)
     graph.add_node('reject_job' , reject_job)
 
-    graph.add_conditional_edges(
-        "routes",
-        route_decision,
+    graph.set_conditional_entry_point(
+        route_decision, 
         {
-            "approve_job":"approve_job",
+            "approve_job": "approve_job",
             "reject_job": "reject_job"
         }
     )
-    graph.set_entry_point("route")
+
     graph.add_edge("approve_job", END)
     graph.add_edge("reject_job", END)
 
