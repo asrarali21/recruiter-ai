@@ -2,7 +2,7 @@ from fastapi import APIRouter , Depends
 from pydantic import BaseModel
 from app.db.session import get_db
 from sqlalchemy.orm import Session
-from app.db.models.job_model import Job
+from app.db.models.Job_model.job_model import Job
 from app.services.job_service import JobService
 from typing import Optional , List
 

@@ -2,12 +2,12 @@
 from sqlalchemy.orm import Session
 from typing import Optional
 from app.db.models.Application_model.application_record import ApplicationRecord
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
 
 
 
-
-
-class ApplicationSerivce:
+class ApplicationService:
     def __init__(self , db:Session):
         self.db = db
         
@@ -19,7 +19,7 @@ class ApplicationSerivce:
     resume_link: str,
     github_link: Optional[str] = None
     )->ApplicationRecord:
-            
+             
             application = ApplicationRecord(
                 job_id = job_id,
                 name= name,
@@ -33,8 +33,6 @@ class ApplicationSerivce:
             self.db.refresh(application)
             
             return application
-        
-
         
 
 

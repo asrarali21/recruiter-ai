@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from app.db.models.job_model import Job
-from app.db.models.job_draft_model import JobDraft
-from app.db.models.job_description import Jobdescription
+from app.db.models.Job_model.job_model import Job
+from app.db.models.Job_model.job_draft_model import JobDraft
+from app.db.models.Job_model.job_description import Jobdescription
 from app.agents.jd_generator import JDGeneratorAgent
 
 class JobService:

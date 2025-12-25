@@ -1,10 +1,11 @@
 from dotenv import load_dotenv
-from app.db.session import SessionLocal
-from app.db.models.job_model import Job
 from fastapi import FastAPI
+
+
+
 from app.db.init_db import init_db
 from app.api.job import router as job_router
-
+from app.api.application_intake import router as application_router 
 load_dotenv()
 
 
@@ -17,6 +18,7 @@ app = FastAPI(
 )
 
 app.include_router(job_router)
+app.include_router(application_router)
 
 @app.on_event("startup")
 def startup_event():
