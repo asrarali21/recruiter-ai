@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from app.db.init_db import init_db
 from app.api.job import router as job_router
 from app.api.application_intake import router as application_router 
+from app.api.resume_ingestion import router as ingestion_router
 load_dotenv()
 
 
@@ -19,6 +20,7 @@ app = FastAPI(
 
 app.include_router(job_router)
 app.include_router(application_router)
+app.include_router(ingestion_router)
 
 @app.on_event("startup")
 def startup_event():

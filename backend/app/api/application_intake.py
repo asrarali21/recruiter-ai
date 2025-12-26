@@ -6,6 +6,8 @@ from app.db.models.Application_model.application_record import ApplicationRecord
 from app.services.application_service import ApplicationService
 from typing import Optional
 
+
+
 router = APIRouter(prefix="/applications" , tags=["applications"])
 
 
