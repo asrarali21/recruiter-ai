@@ -5,6 +5,7 @@ import os
 
 
 GOOGLE_APIKEY = os.getenv("GOOGLE_APIKEY")
+
 class ResumeUnderstandingAgent:
     def __init__(self):
         self.llm = ChatGoogleGenerativeAI(
