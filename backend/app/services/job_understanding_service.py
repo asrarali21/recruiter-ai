@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.agents.job_understanding_agent import JobUnderstandingAgent
 from app.db.models.Job_model.job_description import Jobdescription
-from app.db.models.Candidate_processing_model.resume_analysis import ResumeAnalysis
+from app.db.models.Candidate_processing_model.job_analysis import JobAnalysis
 class JobUndertandingService:
     def __init__(self , db : Session):
         self.db = db
@@ -24,7 +24,7 @@ class JobUndertandingService:
         analysis_json = self.agent.analyze_job(jd.description)
 
 
-        analysis = ResumeAnalysis(
+        analysis = JobAnalysis(
             job_id=job_id,
             analysis_json=analysis_json
         )
