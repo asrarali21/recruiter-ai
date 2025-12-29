@@ -9,7 +9,7 @@ GOOGLE_APIKEY=os.getenv("GOOGLE_APIKEY")
 class CandidateJobMatchingAgent:
     def __init__(self):
         self.llm  = ChatGoogleGenerativeAI(
-          llm_client = ChatGoogleGenerativeAI
+          llm_client = ChatGoogleGenerativeAI,
           model="gemini-2.5-flash", 
           api_key=GOOGLE_APIKEY
         )

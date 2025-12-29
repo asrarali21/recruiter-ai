@@ -10,6 +10,9 @@ from app.api.resume_ingestion import router as ingestion_router
 from app.api.job_understanding import router as job_understanding_router
 
 from app.api.matching import router as matching_router
+from app.api.recruiter_review import router as recruiter_review_router
+
+
 
 load_dotenv()
 
@@ -27,6 +30,7 @@ app.include_router(application_router)
 app.include_router(ingestion_router)
 app.include_router(job_understanding_router)
 app.include_router(matching_router)
+app.include_router(recruiter_review_router)
 
 
 @app.on_event("startup")

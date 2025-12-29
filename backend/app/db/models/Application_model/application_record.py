@@ -7,7 +7,7 @@ class ApplicationRecord(Base):
     __tablename__ = "application_record"
 
     id = Column(Integer , primary_key=True ,index=True )
-    job_id = ForeignKey("jobs.id")
+    job_id = Column(Integer, ForeignKey("jobs.id"), nullable=False, index=True) 
     name  = Column(String , nullable=False)
     email  = Column(String, unique=True , nullable=False)
     resume_link = Column(String , nullable=False)

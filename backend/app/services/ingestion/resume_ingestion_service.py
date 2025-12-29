@@ -15,7 +15,7 @@ class ResumeIngestionService:
 
     def ingest_resume(self, application_id: int):
 
-        # 1. GET APPLICATION FROM DB
+
         application = (
             self.db.query(ApplicationRecord)
             .filter(ApplicationRecord.id == application_id)
@@ -28,7 +28,7 @@ class ResumeIngestionService:
         resume_link = application.resume_link
 
         try:
-            # 2. DOWNLOAD RESUME
+
             response = requests.get(resume_link)
             response.raise_for_status()
 
@@ -36,12 +36,12 @@ class ResumeIngestionService:
                 f.write(response.content)
                 temp_path = f.name
 
-            # 3. EXTRACT TEXT
+
             loader = PyPDFLoader(temp_path)
             pages = loader.load()
             extracted_text = "\n".join(p.page_content for p in pages)
 
-            # 4. SAVE TO DB
+
             record = ResumeRecord(
                 application_id=application_id,
                 resume_link=resume_link,

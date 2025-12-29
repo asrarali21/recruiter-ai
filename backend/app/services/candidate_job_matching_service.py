@@ -14,7 +14,7 @@ class CandidateJobMatchingService:
 
     def match(self, application_id: int, job_id: int):
 
-        # 1️⃣ Load resume understanding
+
             resume_analysis = (
                 self.db.query(ResumeAnalysis)
                 .filter(ResumeAnalysis.application_id == application_id)
@@ -24,7 +24,7 @@ class CandidateJobMatchingService:
             if not resume_analysis:
                 raise Exception("Resume analysis not found")
 
-            # 2️⃣ Load job understanding
+
             job_analysis = (
                 self.db.query(JobAnalysis)
                 .filter(JobAnalysis.job_id == job_id)
@@ -34,7 +34,7 @@ class CandidateJobMatchingService:
             if not job_analysis:
                 raise Exception("Job analysis not found")
 
-            # 3️⃣ LLM reasoning
+
             result_json = self.agent.match(
                 resume_analysis.analysis_json,
                 job_analysis.analysis_json
@@ -42,7 +42,7 @@ class CandidateJobMatchingService:
 
             parsed = json.loads(result_json)
 
-            # 4️⃣ Store match result
+
             match = JobCandidateMatch(
                 application_id=application_id,
                 job_id=job_id,

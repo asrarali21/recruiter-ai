@@ -13,6 +13,7 @@ router = APIRouter(prefix="/applications" , tags=["applications"])
 
 
 class ApplicationData(BaseModel):
+
     name:str
     email:EmailStr
     resume_link:str
@@ -25,7 +26,7 @@ class ApplicationResponse(BaseModel):
     name: str
     email: str
     resume_link: str
-    github_link:str
+    github_link:Optional[str]
     application_status: str
 
 
