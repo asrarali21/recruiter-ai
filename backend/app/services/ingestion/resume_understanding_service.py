@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Session
 from app.db.models.Candidate_processing_model.resume_ingestion_record import ResumeRecord
 from app.db.models.Candidate_processing_model.resume_analysis import ResumeAnalysis
@@ -36,3 +35,5 @@ class ResumeUnderstandingService:
         self.db.refresh(analysis)
 
         return analysis
+
+
