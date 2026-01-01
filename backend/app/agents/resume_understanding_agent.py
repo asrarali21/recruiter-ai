@@ -11,7 +11,7 @@ class ResumeUnderstandingAgent:
         self.llm = ChatGoogleGenerativeAI(
             temperature=0,
             api_key = GOOGLE_APIKEY,
-            model="gemini-2.5-pro" 
+            model="gemini-2.5-flash" 
         )
 
         self.prompt = ChatPromptTemplate.from_template("""
@@ -19,13 +19,14 @@ You are a senior technical recruiter.
 
 Analyze the resume text and return STRICT JSON with these fields:
 
-skills: list of { name, strength }
+skills: list of {{name, strength}}
 total_experience_years: number or null
 role_focus: frontend | backend | fullstack | data | other
 seniority: junior | mid | senior
 projects_summary: string
 ambiguities: list of strings
 confidence: number between 0 and 1
+
 
 Resume text:
 {resume_text}

@@ -3,16 +3,14 @@ from langchain_core.prompts import ChatPromptTemplate
 import os
 
 
-GOOGLE_APIKEY= os.getenv("GOOGLE_API_KEY")
-
-
+GOOGLE_APIKEY= os.getenv("GOOGLE_APIKEY")
 
 class JobUnderstandingAgent:
     def __init__(self):
         self.llm = ChatGoogleGenerativeAI(
             temperature=0,
             api_key = GOOGLE_APIKEY,
-            model = "gemini-2.5-pro"
+            model = "gemini-2.5-flash"
         )
 
         self.prompt = ChatPromptTemplate.from_template("""

@@ -13,7 +13,7 @@ class JobUndertandingService:
 
         jd = (
             self.db.query(Jobdescription).filter(
-                Jobdescription.id == job_id
+                Jobdescription.job_id == job_id
             ).first()
         )
         if not jd:
@@ -22,6 +22,7 @@ class JobUndertandingService:
 
 
         analysis_json = self.agent.analyze_job(jd.description)
+        print(analysis_json)
 
 
         analysis = JobAnalysis(

@@ -35,12 +35,11 @@ class CandidateJobMatchingService:
                 raise Exception("Job analysis not found")
 
 
-            result_json = self.agent.match(
+            parsed = self.agent.match(
                 resume_analysis.analysis_json,
                 job_analysis.analysis_json
             )
 
-            parsed = json.loads(result_json)
 
 
             match = JobCandidateMatch(
@@ -48,7 +47,7 @@ class CandidateJobMatchingService:
                 job_id=job_id,
                 match_score=parsed["match_score"],
                 match_summary=parsed["summary"],
-                reasoning_json=result_json
+                reasoning_json=json.dumps(parsed)
             )
 
             self.db.add(match)
