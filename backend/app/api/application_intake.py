@@ -5,6 +5,7 @@ from app.db.session import get_db
 from app.db.models.Application_model.application_record import ApplicationRecord
 from app.services.application_service import ApplicationService
 from typing import Optional
+from app.graphs.candidate_process_graph import build_candidate_processing_graph
 
 
 
@@ -43,6 +44,14 @@ def application_record( job_id: int, application_data : ApplicationData , db:Ses
         resume_link=application_data.resume_link,
         github_link=application_data.github_link
     )
+
+    graph = build_candidate_processing_graph()
+
+    graph.invoke({
+    "application_id": application.id,
+    "job_id": job_id
+})
+
     return application
 
 

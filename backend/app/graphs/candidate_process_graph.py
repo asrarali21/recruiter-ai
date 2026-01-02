@@ -1,13 +1,13 @@
-from langgraph.graph import StateGraph
+from langgraph.graph import StateGraph , END
 from typing import TypedDict
 
 from app.services.ingestion.resume_ingestion_service import ResumeIngestionService
 from app.services.ingestion.resume_understanding_service import ResumeUnderstandingService
 from app.services.job_understanding_service import JobUndertandingService
-from app.services.
+from app.services.candidate_job_matching_service import CandidateJobMatchingService
 
 
-class CandidateState(TypedDict):
+class CandidateProcessingState(TypedDict):
     job_id : int
     application_id:int
 
@@ -65,9 +65,19 @@ def match_candidate(state):
 
 
 
+def build_candidate_processing_graph():
+    graph = StateGraph(CandidateProcessingState)
 
-graph = StateGraph()
+    graph.add_node("ingest_resume", ingest_resume)
+    graph.add_node("understand_resume", understand_resume)
+    graph.add_node("understand_job", understand_job)
+    graph.add_node("match_candidate", match_candidate)
 
+    graph.set_entry_point("ingest_resume")
 
+    graph.add_edge("ingest_resume", "understand_resume")
+    graph.add_edge("understand_resume", "understand_job")
+    graph.add_edge("understand_job", "match_candidate")
+    graph.add_edge("match_candidate", END)
 
-graph.add_node("ingest_resume" , ingest_resume)
+    return graph.compile()
