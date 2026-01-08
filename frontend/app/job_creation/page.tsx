@@ -41,6 +41,7 @@ export default function JobCreationPage() {
     mutationFn: createJob,
     onSuccess: (data) => {
       console.log('✅ Job created:', data)
+      const JobId = data.id
       queryClient.invalidateQueries({ queryKey: ['jobs'] })
       router.push('/jobs')
     },
