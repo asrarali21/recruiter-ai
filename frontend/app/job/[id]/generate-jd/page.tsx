@@ -70,7 +70,7 @@ export default function GenerateJDPage(){
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Generate Job Description</h1>
 
-        {/* Generate Button */}
+
         {!showJD && (
           <div className="bg-white shadow rounded-lg p-8 text-center">
             <p className="text-gray-600 mb-6">
@@ -91,7 +91,7 @@ export default function GenerateJDPage(){
             )}
           </div>
         )}
-             {/* Show Generated JD */}
+
         {showJD && generateMutation.data && (
           <div className="bg-white shadow rounded-lg p-8">
             <h2 className="text-2xl font-bold mb-4">Generated Job Description</h2>
