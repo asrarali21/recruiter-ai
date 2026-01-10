@@ -6,6 +6,7 @@ from app.db.models.Job_model.job_model import Job
 from app.services.job_service import JobService
 from typing import Optional , List
 
+from app.services.job_understanding_service import Jobdescription
 
 
 
@@ -71,6 +72,29 @@ def approve_decision(   approval: ApprovalDecision , job_id : int ,db: Session =
         "status": "updated",
         "decision": approval.decision
     }
+
+
+@router.get("/get_jobs")
+def get_jobs(db : Session = Depends(get_db)):
+
+
+    jobs = db.query(Job.id,
+                    Job.title,
+                    Job.status,
+                    Jobdescription.description,
+                    ).outerjoin(Jobdescription,Job.id == Jobdescription.job_id).filter(Job.status =="open").all()
+ 
+
+    result = []
+    for job in jobs:
+        result.append({
+            "id": job.id,
+            "title": job.title,
+            "status": job.status,
+            "description": job.description if job.description else "No description yet",
+        })
+
+    return result
 
 
 
