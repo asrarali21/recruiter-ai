@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 
@@ -20,11 +22,22 @@ load_dotenv()
 
 
 
+
+
 app = FastAPI(
     title="Recruiter AI API",
     description="Multi-agent recruitment system",
     version="1.0.0"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(job_router)
 app.include_router(application_router)
@@ -40,6 +53,10 @@ def startup_event():
     print("Creating database tables...")
     init_db()
     print("Database initialized!")
+
+
+
+
 
 
 
