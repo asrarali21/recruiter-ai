@@ -19,3 +19,14 @@ def match_candidate_job(
         "match_id": match.id,
         "score": match.match_score
     }
+
+
+
+@router.get("/final_candidates")
+def get_match_job(  db: Session = Depends(get_db)):
+
+    result = db.query(CandidateJobMatchingService).all()
+
+    return result
+
+

@@ -21,9 +21,6 @@ load_dotenv()
 
 
 
-
-
-
 app = FastAPI(
     title="Recruiter AI API",
     description="Multi-agent recruitment system",
