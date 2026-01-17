@@ -14,6 +14,7 @@ from app.api.job_understanding import router as job_understanding_router
 
 from app.api.matching import router as matching_router
 from app.api.recruiter_review import router as recruiter_review_router
+from app.api.admin_login import router as admin_login_router
 
 
 
@@ -43,6 +44,7 @@ app.include_router(resume_understanding)
 app.include_router(job_understanding_router)
 app.include_router(matching_router)
 app.include_router(recruiter_review_router)
+app.include_router(admin_login_router)
 
 
 @app.on_event("startup")

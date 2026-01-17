@@ -34,6 +34,7 @@ def get_match_job(  db: Session = Depends(get_db)):
             JobCandidateMatch.application_id,
             JobCandidateMatch.job_id,
             JobCandidateMatch.match_score,
+            JobCandidateMatch.match_summary,
             ApplicationRecord.name.label("candidate_name"),
             ApplicationRecord.email.label("candidate_email"),
             ApplicationRecord.resume_link,
@@ -42,10 +43,11 @@ def get_match_job(  db: Session = Depends(get_db)):
         )
         .join(ApplicationRecord, JobCandidateMatch.application_id == ApplicationRecord.id)
         .join(Job, JobCandidateMatch.job_id == Job.id)
-        .filter(JobCandidateMatch.job_id == job_id)
         .order_by(JobCandidateMatch.match_score.desc())  # Highest score first
         .all()
     )
+
+
 
     result = []
     for match in matches:
@@ -54,6 +56,7 @@ def get_match_job(  db: Session = Depends(get_db)):
             "application_id": match.application_id,
             "job_id": match.job_id,
             "match_score": match.match_score,
+            "match_summary":match.match_summary,
             "candidate_name": match.candidate_name,
             "candidate_email": match.candidate_email,
             "resume_link": match.resume_link,
