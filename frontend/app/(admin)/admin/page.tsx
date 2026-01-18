@@ -172,7 +172,7 @@ export default function AdminPage() {
     setSelectedCandidate(null)
   }
 
-  const filteredCandidates = candidates?.filter(c => c.match_score >= filterScore) || []
+  const filteredCandidates = candidates?.filter(c => c.match_score >= Number(filterScore)) || []
 
   // Loading State
   if (isLoading) {
@@ -365,29 +365,11 @@ export default function AdminPage() {
                         </div>
 
                         {/* Summary */}
-                        <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">
-                          {summary.summary}
-                        </p>
-
-                        {/* Strengths Preview */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <CheckIcon />
-                            <h4 className="text-sm font-semibold text-gray-300">Top Strengths</h4>
-                          </div>
-                          <div className="space-y-1">
-                            {summary.strengths.slice(0, 2).map((strength, idx) => (
-                              <div key={idx} className="flex items-start gap-2">
-                                <span className="text-emerald-400 mt-0.5">•</span>
-                                <p className="text-sm text-gray-400 line-clamp-1">{strength}</p>
-                              </div>
-                            ))}
-                            {summary.strengths.length > 2 && (
-                              <p className="text-xs text-violet-400 font-medium">
-                                +{summary.strengths.length - 2} more strengths
-                              </p>
-                            )}
-                          </div>
+                        <div className="space-y-2">
+                          <h4 className="text-sm font-semibold text-gray-300">Match Summary</h4>
+                          <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
+                            {summary.summary}
+                          </p>
                         </div>
 
                         {/* Action Buttons */}
@@ -514,67 +496,13 @@ export default function AdminPage() {
                             {selectedCandidate.match_score}%
                           </div>
                         </div>
-                        <p className="text-gray-300 leading-relaxed">{summary.summary}</p>
-                        <div className="mt-4 flex items-center gap-3 text-sm text-gray-400">
-                          <span className="font-semibold">Confidence:</span>
-                          <div className="flex-1 bg-white/10 rounded-full h-2 max-w-xs">
-                            <motion.div
-                              className="bg-violet-500 h-2 rounded-full"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${summary.confidence * 100}%` }}
-                              transition={{ duration: 0.5, delay: 0.2 }}
-                            />
-                          </div>
-                          <span className="font-bold text-white">{(summary.confidence * 100).toFixed(0)}%</span>
-                        </div>
-                      </div>
 
-                      {/* Strengths */}
-                      <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                            <CheckIcon />
+                        <div className="space-y-4">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Match Summary</h4>
+                            <p className="text-gray-300 leading-relaxed text-lg">{summary.summary}</p>
                           </div>
-                          <h3 className="text-xl font-bold text-white">Key Strengths ({summary.strengths.length})</h3>
                         </div>
-                        <ul className="space-y-3">
-                          {summary.strengths.map((strength, idx) => (
-                            <motion.li
-                              key={idx}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: idx * 0.1 }}
-                              className="flex items-start gap-3"
-                            >
-                              <span className="text-emerald-400 font-bold mt-1">✓</span>
-                              <span className="text-gray-300">{strength}</span>
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Gaps */}
-                      <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">
-                            <XIcon />
-                          </div>
-                          <h3 className="text-xl font-bold text-white">Identified Gaps ({summary.gaps.length})</h3>
-                        </div>
-                        <ul className="space-y-3">
-                          {summary.gaps.map((gap, idx) => (
-                            <motion.li
-                              key={idx}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: idx * 0.1 }}
-                              className="flex items-start gap-3"
-                            >
-                              <span className="text-red-400 font-bold mt-1">✗</span>
-                              <span className="text-gray-300">{gap}</span>
-                            </motion.li>
-                          ))}
-                        </ul>
                       </div>
 
                       {/* Action Buttons */}

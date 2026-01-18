@@ -27,7 +27,7 @@ const generateJd = async (JobId: number): Promise<JDResponse> => {
 }
 
 const JdApprove = async (JobId: number, decision: string): Promise<ApproveResponse> => {
-  const response = await axios.post(`http://localhost:8000/jobs/${JobId}/approve`, decision)
+  const response = await axios.post(`http://localhost:8000/jobs/${JobId}/approve`, { decision })
   return response.data
 }
 
@@ -125,7 +125,7 @@ export default function GenerateJDPage() {
       if (data.decision === "approve") {
         setIsApproved(true)
         setTimeout(() => {
-          router.push("/admin")
+          router.push("/careers")
         }, 2000)
       } else {
         // Regenerate

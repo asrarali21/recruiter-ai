@@ -1,8 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import axios from "axios"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
@@ -75,6 +78,12 @@ const SearchIcon = () => (
   </svg>
 )
 
+const ChevronDownIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+  </svg>
+)
+
 // Skeleton loader component
 function JobCardSkeleton() {
   return (
@@ -95,6 +104,106 @@ function JobCardSkeleton() {
         <div className="h-5 w-24 bg-white/10 rounded-full" />
       </div>
     </div>
+  )
+}
+
+function JobCard({ job, onApply }: { job: Job; onApply: (id: number) => void }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  return (
+    <Card variant="default" padding="none" className="group overflow-hidden">
+      <div className="p-6 md:p-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-3">
+              <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-violet-300 transition-colors">
+                {job.title}
+              </h3>
+              <span className="px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full">
+                {job.status}
+              </span>
+            </div>
+
+            {/* Meta Info */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-1.5">
+                <LocationIcon />
+                <span>Remote / Hybrid</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <ClockIcon />
+                <span>Full-time</span>
+              </div>
+              {job.created_at && (
+                <div className="flex items-center gap-1.5">
+                  <ClockIcon />
+                  <span>Posted {new Date(job.created_at).toLocaleDateString()}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Apply Button - Desktop */}
+          <div className="hidden md:block">
+            <Button
+              variant="primary"
+              rightIcon={<ArrowRightIcon />}
+              onClick={() => onApply(job.id)}
+            >
+              Apply Now
+            </Button>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="mb-6 relative">
+          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            Job Description
+          </h4>
+          <div
+            className={`
+              prose prose-invert prose-sm max-w-none text-gray-300 
+              [&>p]:mb-4 [&>h1]:text-base [&>h2]:text-base [&>h3]:text-sm [&>ul]:my-2 [&>li]:my-1
+              ${!isExpanded ? 'line-clamp-3' : ''}
+              transition-all duration-300
+            `}
+          >
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {job.description}
+            </ReactMarkdown>
+          </div>
+
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="mt-2 text-violet-400 hover:text-white text-sm font-medium flex items-center gap-1 transition-colors"
+          >
+            {isExpanded ? 'Show Less' : 'Read More'}
+            <motion.span
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronDownIcon />
+            </motion.span>
+          </button>
+        </div>
+
+        {/* Apply Button - Mobile */}
+        <div className="md:hidden">
+          <Button
+            variant="primary"
+            fullWidth
+            rightIcon={<ArrowRightIcon />}
+            onClick={() => onApply(job.id)}
+          >
+            Apply Now
+          </Button>
+        </div>
+      </div>
+
+      {/* Bottom Gradient Accent */}
+      <div className="h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    </Card>
   )
 }
 
@@ -221,7 +330,7 @@ export default function CareersPage() {
               Open Positions {jobs && `(${jobs.length})`}
             </h2>
 
-            {/* Search Bar (placeholder for future functionality) */}
+            {/* Search Bar */}
             <div className="relative max-w-sm w-full">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                 <SearchIcon />
@@ -276,77 +385,7 @@ export default function CareersPage() {
                   variants={fadeInUp}
                   custom={index}
                 >
-                  <Card variant="default" padding="none" className="group overflow-hidden">
-                    <div className="p-6 md:p-8">
-                      {/* Header */}
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-violet-300 transition-colors">
-                              {job.title}
-                            </h3>
-                            <span className="px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full">
-                              {job.status}
-                            </span>
-                          </div>
-
-                          {/* Meta Info */}
-                          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-                            <div className="flex items-center gap-1.5">
-                              <LocationIcon />
-                              <span>Remote / Hybrid</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <ClockIcon />
-                              <span>Full-time</span>
-                            </div>
-                            {job.created_at && (
-                              <div className="flex items-center gap-1.5">
-                                <ClockIcon />
-                                <span>Posted {new Date(job.created_at).toLocaleDateString()}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Apply Button - Desktop */}
-                        <div className="hidden md:block">
-                          <Button
-                            variant="primary"
-                            rightIcon={<ArrowRightIcon />}
-                            onClick={() => handleApply(job.id)}
-                          >
-                            Apply Now
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Description */}
-                      <div className="mb-6">
-                        <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                          Job Description
-                        </h4>
-                        <p className="text-gray-300 leading-relaxed whitespace-pre-line line-clamp-3">
-                          {job.description}
-                        </p>
-                      </div>
-
-                      {/* Apply Button - Mobile */}
-                      <div className="md:hidden">
-                        <Button
-                          variant="primary"
-                          fullWidth
-                          rightIcon={<ArrowRightIcon />}
-                          onClick={() => handleApply(job.id)}
-                        >
-                          Apply Now
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Bottom Gradient Accent */}
-                    <div className="h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </Card>
+                  <JobCard job={job} onApply={handleApply} />
                 </motion.div>
               ))}
             </motion.div>
