@@ -36,7 +36,11 @@ def job_create(job_data:JobCreate ,db: Session = Depends(get_db)):
   
     draft = job_service.job_draft( job =  job , raw_input = job_data.dict() )
              
-    return job
+    return {
+        "id": job.id,
+        "title": job.title,
+        "status": job.status
+    }
 
 
 

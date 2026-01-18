@@ -34,7 +34,7 @@ def get_match_job(  db: Session = Depends(get_db)):
             JobCandidateMatch.application_id,
             JobCandidateMatch.job_id,
             JobCandidateMatch.match_score,
-            JobCandidateMatch.match_summary,
+            JobCandidateMatch.reasoning_json.label("match_summary"),
             ApplicationRecord.name.label("candidate_name"),
             ApplicationRecord.email.label("candidate_email"),
             ApplicationRecord.resume_link,
