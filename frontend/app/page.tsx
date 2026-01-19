@@ -203,12 +203,13 @@ export default function Home() {
             {/* CTAs */}
             <motion.div
               variants={fadeInUp}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 "
             >
               <Link href="/job_creation">
                 <Button
                   variant="primary"
                   size="lg"
+                  className="cursor-pointer"
                   rightIcon={<ArrowRightIcon />}
                 >
                   I&apos;m Hiring
@@ -217,6 +218,7 @@ export default function Home() {
               <Link href="/careers">
                 <Button
                   variant="secondary"
+                  className="cursor-pointer"
                   size="lg"
                 >
                   I&apos;m Looking for Jobs

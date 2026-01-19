@@ -87,7 +87,7 @@ export function Navbar() {
                         </div>
 
                         {/* Desktop CTA Buttons */}
-                        <div className="hidden md:flex items-center gap-3">
+                        {/* <div className="hidden md:flex items-center gap-3">
                             <Link
                                 href="/careers"
                                 className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
@@ -100,7 +100,7 @@ export function Navbar() {
                             >
                                 Get Started
                             </Link>
-                        </div>
+                        </div> */}
 
                         {/* Mobile Menu Button */}
                         <button
@@ -178,7 +178,7 @@ export function Navbar() {
                                 </nav>
 
                                 {/* Mobile CTA */}
-                                <div className="p-4 border-t border-white/10 space-y-3">
+                                {/* <div className="p-4 border-t border-white/10 space-y-3">
                                     <Link
                                         href="/careers"
                                         className="block w-full py-3 text-center font-medium text-gray-300 hover:text-white border border-white/10 rounded-xl hover:bg-white/5 transition-all"
@@ -191,7 +191,7 @@ export function Navbar() {
                                     >
                                         Get Started
                                     </Link>
-                                </div>
+                                </div> */}
                             </div>
                         </motion.div>
                     </>
